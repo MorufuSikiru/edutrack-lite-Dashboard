@@ -176,3 +176,12 @@ canvas {
     width: 100% !important;
     height: 300px !important;
 }
+
+#student_links, #resul_link{
+    text-decoration: none;
+    color: #fff;
+}
+#student_links:hover, #resul_link:hover{
+    text-decoration: underline;
+    color: tomato;
+}
