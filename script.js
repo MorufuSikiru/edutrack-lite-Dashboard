@@ -26,7 +26,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 let subjects = JSON.parse(localStorage.getItem('subjects')) || [];
 renderTable();
-
 addBtn.addEventListener('click', () => {
     const name = studentNameInput.value.trim();
     const studentClass = studentClassInput.value;
@@ -35,19 +34,40 @@ addBtn.addEventListener('click', () => {
     const scoreValue = scoreInput.value.trim();
     const score = Number(scoreValue);
 
-    if(!name || !studentClass || !term || !subject || scoreValue === '' || isNaN(score) || score < 0 || score > 100) {
+    if (
+        !name ||
+        !studentClass ||
+        !term ||
+        !subject ||
+        scoreValue === '' ||
+        isNaN(score) ||
+        score < 0 ||
+        score > 100
+    ) {
         alert('Please fill all fields correctly.');
         return;
     }
+
+    const alreadyExists = subjects.some(item =>
+        item.name.toLowerCase() === name.toLowerCase() &&
+        item.studentClass === studentClass &&
+        item.term === term &&
+        item.subject.toLowerCase() === subject.toLowerCase()
+    );
+
+    if (alreadyExists) {
+        alert('This subject has already been added for this student in this term.');
+        return;
+    }
+
     subjects.push({ name, studentClass, term, subject, score });
     localStorage.setItem('subjects', JSON.stringify(subjects));
 
-    subjectInput.value = '';
+    subjectInput.selectedIndex = 0;
     scoreInput.value = '';
 
     renderTable();
 });
-
 function renderTable() {
     resultBody.innerHTML = '';
     let total = 0;
@@ -152,12 +172,15 @@ printBtn.addEventListener('click', () => {
 });
 
 function updateChart() {
-
     const canvas = document.getElementById('performanceChart');
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    if (typeof Chart === 'undefined') {
+        console.warn('Chart.js is not loaded.');
+        return;
+    }
 
+    const ctx = canvas.getContext('2d');
     const labels = subjects.map(item => item.subject);
     const data = subjects.map(item => item.score);
 
