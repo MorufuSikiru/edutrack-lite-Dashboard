@@ -166,6 +166,7 @@ body.dark-mode .card {
         left: 0;
         top: 0;
         width: 100%;
+    
     }
 }
 canvas {
@@ -184,4 +185,13 @@ canvas {
 #student_links:hover, #resul_link:hover{
     text-decoration: underline;
     color: tomato;
+}
+#printBtn{
+    margin-top: 15px;
+    padding: 10px;
+   
+    
+    /* border: none; */
+    border-radius: 5px;
+    cursor: pointer;
 }
